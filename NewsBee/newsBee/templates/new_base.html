@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Bee</title>
+  <head>
+    <link rel="stylesheet" href="{% static 'master.css'%}">
+
+  </head>
+  <body>
+    <div class="nav">
+    <div class="nav-header">
+    <div class="nav-title">
+      News Bee
+    </div>
+    </div>
+    <div class="nav-links">
+      {% if user.is_authenticated %}
+
+        <a href="{% url 'news:countrynews' %}">News</a>
+        <a href="{% url 'news:shared_news' %}">Bee News</a>
+        <a href="{% url 'news:user_shared_news' %}">My Collection</a>
+        <a href="{% url 'accounts:logout' %}">Log Out</a>
+      {% else %}
+        <a href="{% url 'signup' %}">Sign Up</a>
+        <a href="{% url 'accounts:login' %}">Log In</a>
+      {% endif %}
+    </div>
+
+    </div>
+      {% block content %}
+
+      {% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'accounts/main.css'%}">
+<div class="login">
+  <div class="login-triangle"></div>
+
+  <h2 class="login-header">Sign Up</h2>
+
+  <form class="login-container" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <p><input type="submit" class="btn btn-default" value="Sign Up"></p>
+  </form>
+</div>
+{% endblock %}

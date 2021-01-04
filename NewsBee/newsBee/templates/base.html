@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Bee</title>
+    <link rel="stylesheet" href="{% static 'main/nav.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+    </script>
+  </head>
+    <nav style="margin-bottom:90px;">
+      <div class="menu-icon">
+        <span class="fas fa-bars"></span>
+      </div>
+        <div class="logo">
+        News Bee
+        </div>
+        <div class="nav-items">
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'news:countrynews' %}">News</a></li>
+            <li><a href="{% url 'news:shared_news' %}">Bee News</a></li>
+            <li><a href="{% url 'news:user_shared_news' %}">My Collection</a></li>
+            <li><a href="#">{{user}}</a></li>
+            <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+
+          {% else %}
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            <li><a href="{% url 'accounts:login' %}">Log In</a></li>
+          {% endif %}
+        </div>
+        {% block nav %}
+
+        {% endblock %}
+        </nav>
+
+
+
+
+    {% block content %}
+
+    {% endblock %}
+
+
+
+  </body>
+  <script type="text/javascript" src="{% static 'js/searchbox.js' %}">
+  </script>
+</html>

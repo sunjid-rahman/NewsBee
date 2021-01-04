@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block nav %}
+<div class="search-icon">
+<span class="fas fa-search"></span></div>
+<div class="cancel-icon">
+<span class="fas fa-times"></span></div>
+<form action="{% url 'news:search_news' %}" method="GET" accept-charset="utf-8">
+    <input type="search" name="search" class="search-data" placeholder="Search" required>
+    <button type="submit" class="fas fa-search"></button>
+</form>
+{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'news/main.css'%}">
+<link rel="stylesheet" href="{% static 'news/popup.css'%}">
+<h1>Showing result on "{{search}}"</h1>
+{% ifnotequal status "empty" %}
+  {% for data in newsdata %}
+  <div class="container" style="">
+   <article id="content" class="clearfix">
+     <h1>{{data.title}}</h1>
+     <p class="byline">Source: {{data.source}}</p>
+     <p class="byline">Written by <a href="javascript:void(0)">{{data.author}}</a> on {{ data.published_at|custom_date:"dS M, Y" }}</p>
+     <div id="post-container">
+       <section id="post">
+         <figure id="featuredimg">
+           {% if data.image is not None %}
+              <img src="{{data.image}}"  width="40%" height="30%">
+            {% endif %}
+
+         </figure>
+         <p>{{data.description}}</p>
+         <div class="box">
+           <a class="button" href="#popup1{{forloop.counter}}">Share</a>
+        </div>
+          <div id="popup1{{forloop.counter}}" class="overlay">
+           <div class="popup">
+             <h2 style="color:#4BF768 ;">Share this News</h2>
+             <a class="close" href="#">&times;</a>
+             <div class="content">
+               <form class="hidden-form" action="{% url 'news:create_news'  %}" method="POST">
+                 {% csrf_token %}
+                 <input type="hidden" name="source" value="{{data.source}}">
+                 <input type="hidden" name="title" value="{{data.title}}">
+                 <input type="hidden" name="author" value="{{data.author}}">
+                 <input type="hidden" name="category" value="{{data.category}}">
+                 <input type="hidden" name="image" value="{{data.image}}">
+                 <input type="hidden" name="description" value="{{data.description}}">
+                 <input type="hidden" name="created_at" value="{{data.published_at}}">
+                 <input type="hidden" name="shared_by" value="{{user.pk}}">
+                 <!-- <input type="textarea" name="shared_views"> -->
+                 <textarea name="shared_views"style="resize: none;" rows="6%" cols="25%" placeholder="Say Something about this..."></textarea><br>
+                 <input type="submit" class="button" value="Share">
+                </form>
+             </div>
+           </div>
+          </div>
+
+
+       </section>
+     </div><!-- @end #post-container -->
+
+   </article><!-- @end #content -->
+
+
+
+
+
+  </div><!-- @end #container -->
+
+  {% endfor %}
+{% else %}
+  <h2>No Result Found.</h2>
+{% endifnotequal %}
+{% endblock %}
